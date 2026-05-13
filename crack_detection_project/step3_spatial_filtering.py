@@ -41,7 +41,7 @@ for idx, path in enumerate(image_paths, 1):
     plt.title("Median Filtered")
     plt.axis('off')
     
-    plt.suptitle(f"Image {idx}: Spatial Filtering\nMedian filter preserves crack edges better than Gaussian — preferred for thin crack structures as it removes salt-and-pepper noise without blurring boundaries")
+    plt.suptitle(f"Image {idx}: Spatial Filtering\nAnalyze noise removal and detail preservation: Gaussian blurs details & noise equally. Median removes noise perfectly while preserving crack edge details.")
     plt.tight_layout()
     plt.savefig(f"output_figures/step3_spatial_filtering_img{idx}.png")
     plt.show()

@@ -50,7 +50,7 @@ for idx, path in enumerate(image_paths, 1):
     plt.title("Sobel Edges")
     plt.axis('off')
     
-    plt.suptitle(f"Image {idx}: Edge Detection\nCanny produces cleaner, continuous crack edges with better noise suppression; Sobel detects gradient magnitude but generates thicker, noisier edges")
+    plt.suptitle(f"Image {idx}: Edge Detection\nEvaluate Edge Clarity and Continuity: Canny provides excellent edge clarity and high continuity for cracks. Sobel is thicker, noisier, and lacks continuity.")
     plt.tight_layout()
     plt.savefig(f"output_figures/step7_edge_detection_img{idx}.png")
     plt.show()

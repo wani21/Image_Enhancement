@@ -30,24 +30,33 @@ for idx, path in enumerate(image_paths, 1):
     # Adaptive Thresholding
     adaptive = cv2.adaptiveThreshold(enhanced, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
     
-    plt.figure(figsize=(15, 5))
+    # Improve segmentation quality (morphological noise removal)
+    kernel = np.ones((3, 3), np.uint8)
+    improved_adaptive = cv2.morphologyEx(adaptive, cv2.MORPH_OPEN, kernel)
+
+    plt.figure(figsize=(20, 5))
     
-    plt.subplot(131)
+    plt.subplot(141)
     plt.imshow(enhanced, cmap='gray')
     plt.title("Enhanced Grayscale")
     plt.axis('off')
     
-    plt.subplot(132)
+    plt.subplot(142)
     plt.imshow(otsu, cmap='gray')
-    plt.title("Otsu Result")
+    plt.title("Otsu Result\n(Identify: Over/Under-segmentation)")
     plt.axis('off')
     
-    plt.subplot(133)
+    plt.subplot(143)
     plt.imshow(adaptive, cmap='gray')
-    plt.title("Adaptive Result")
+    plt.title("Adaptive Result\n(Detail preserved, noisy)")
+    plt.axis('off')
+
+    plt.subplot(144)
+    plt.imshow(improved_adaptive, cmap='gray')
+    plt.title("Improved Adaptive\n(Noise removal & Detail preservation)")
     plt.axis('off')
     
-    plt.suptitle(f"Image {idx}: Segmentation\nAdaptive thresholding handles uneven illumination in drone images better than global Otsu — reduces over-segmentation in bright regions")
+    plt.suptitle(f"Image {idx}: Segmentation\nAnalyze: Adaptive prevents Otsu's over/under-segmentation. Morphological opening improves quality by removing noise while preserving crack details.")
     plt.tight_layout()
     plt.savefig(f"output_figures/step6_segmentation_img{idx}.png")
     plt.show()

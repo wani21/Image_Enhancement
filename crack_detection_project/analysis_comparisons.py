@@ -42,7 +42,7 @@ for idx in range(num_images):
     if idx == 0: ax3.set_title("Median")
     ax3.axis('off')
 
-fig_A.suptitle("Spatial Filter Comparison: Gaussian vs Median", fontsize=16)
+fig_A.suptitle("Spatial Filter Comparison: Analyze Noise Removal and Detail Preservation (Median > Gaussian)", fontsize=16)
 plt.tight_layout()
 plt.savefig("output_figures/analysis_A_filter_comparison.png")
 plt.show()
@@ -68,14 +68,15 @@ for idx in range(num_images):
     if idx == 0: ax2.set_title("Otsu Result")
     ax2.axis('off')
     # Adding annotation under Otsu result about over/under-segmentation
-    ax2.text(0.5, -0.15, "Check for over/under-segmentation", transform=ax2.transAxes, ha='center', fontsize=10)
+    ax2.text(0.5, -0.15, "Identify: Otsu often causes under-segmentation (misses cracks)\nor over-segmentation (labels shadows as cracks)", transform=ax2.transAxes, ha='center', fontsize=10)
+    ax3.text(0.5, -0.15, "Analyze: Adaptive preserves details better but may keep noise", transform=ax3.transAxes, ha='center', fontsize=10)
     
     ax3 = fig_B.add_subplot(num_images, 3, idx*3 + 3)
     ax3.imshow(adaptive, cmap='gray')
     if idx == 0: ax3.set_title("Adaptive Result")
     ax3.axis('off')
 
-fig_B.suptitle("Segmentation Comparison: Otsu vs Adaptive", fontsize=16)
+fig_B.suptitle("Segmentation Comparison: Otsu (Over/Under-segmentation) vs Adaptive (Detail Preserved)", fontsize=16)
 plt.tight_layout()
 plt.savefig("output_figures/analysis_B_segmentation_comparison.png")
 plt.show()
@@ -110,7 +111,7 @@ for idx in range(num_images):
     if idx == 0: ax3.set_title("Sobel Edges")
     ax3.axis('off')
 
-fig_C.suptitle("Edge Detection Comparison: Canny vs Sobel", fontsize=16)
+fig_C.suptitle("Edge Detection Comparison: Evaluate Edge Clarity and Continuity (Canny > Sobel)", fontsize=16)
 plt.tight_layout()
 plt.savefig("output_figures/analysis_C_edge_comparison.png")
 plt.show()

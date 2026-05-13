@@ -30,29 +30,40 @@ for idx, path in enumerate(image_paths, 1):
     mask = np.zeros((rows, cols), np.uint8)
     cv2.circle(mask, (ccol, crow), 60, 1, -1)
     
-    fshift_filtered = fshift * mask
-    f_ishift = np.fft.ifftshift(fshift_filtered)
-    img_back = np.fft.ifft2(f_ishift)
-    img_back = np.abs(img_back)
+    # Low-pass filter (removes high-frequency noise)
+    fshift_lp = fshift * mask
+    f_ishift_lp = np.fft.ifftshift(fshift_lp)
+    img_back_lp = np.abs(np.fft.ifft2(f_ishift_lp))
     
-    plt.figure(figsize=(15, 5))
+    # High-pass filter (enhances edges/details)
+    mask_hp = 1 - mask
+    fshift_hp = fshift * mask_hp
+    f_ishift_hp = np.fft.ifftshift(fshift_hp)
+    img_back_hp = np.abs(np.fft.ifft2(f_ishift_hp))
     
-    plt.subplot(131)
+    plt.figure(figsize=(20, 5))
+    
+    plt.subplot(141)
     plt.imshow(gray, cmap='gray')
     plt.title("Original Grayscale")
     plt.axis('off')
     
-    plt.subplot(132)
+    plt.subplot(142)
     plt.imshow(magnitude_spectrum, cmap='gray')
     plt.title("Magnitude Spectrum")
     plt.axis('off')
     
-    plt.subplot(133)
-    plt.imshow(img_back, cmap='gray')
-    plt.title("Low-pass Filtered Result")
+    plt.subplot(143)
+    plt.imshow(img_back_lp, cmap='gray')
+    plt.title("Low-pass (Noise Removal)")
     plt.axis('off')
     
-    plt.suptitle(f"Image {idx}: Frequency Filtering\nLow-pass DFT filter removes high-frequency noise while retaining large crack structures")
+    plt.subplot(144)
+    plt.imshow(img_back_hp, cmap='gray')
+    plt.title("High-pass (Detail Preserved)")
+    plt.axis('off')
+    
+    plt.suptitle(f"Image {idx}: Frequency Filtering\nAnalyze: Low-pass effectively removes noise but blurs details; High-pass preserves crack edges and details but keeps high-frequency noise.")
     plt.tight_layout()
     plt.savefig(f"output_figures/step4_frequency_filtering_img{idx}.png")
     plt.show()
